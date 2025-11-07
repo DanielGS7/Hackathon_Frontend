@@ -1,0 +1,41 @@
+﻿@page "/"
+@using FishTracker.Components.Pages.Home.Parts
+
+<MudGrid Justify="Justify.Center" Class="overflow-hidden">
+    <MudItem xs="12">
+        <div class="@(_noCatches ? "mt-20" : "mt-4")">
+            <MudText Typo="Typo.h2" Align="Align.Center" Class="pa-4" Color="Color.Primary">Ready to dive?</MudText>
+            <MudText Typo="Typo.h3" Align="Align.Center">Tap to track fish</MudText>
+        </div>
+    </MudItem>
+
+    <MudItem Class="d-flex justify-center align-center my-20" xs="12" Style="height: 200px;"
+             onclick="@(() => GoToTracking())">
+        <dotlottie-wc
+            src="/_content/FishTracker.Components/images/pulse_button.lottie"
+            style="width: 350px;height: 350px"
+            speed="0.8"
+            autoplay
+            loop
+        />
+        <MudImage Class="absolute" src="/_content/FishTracker.Components/images/Fish.svg" alt="Fish" Width="60"/>
+    </MudItem>
+
+    <MudItem Class="d-flex justify-center align-center" xs="12">
+        @if (_noCatches)
+        {
+            <MudText Class="mb-16" Align="Align.Center">
+                Scan the waters,
+                <br>unlock the stories
+            </MudText>
+        }
+        else
+        {
+            <RecentCatchesPanel Fishes="Fishes" OnRefresh="RefreshFishes" LoadingFishes="@_loadingFishes"/>
+        }
+    </MudItem>
+</MudGrid>
+
+<MudIconButton Icon="@Icons.Material.Filled.Chat" Class="fixed rounded-circle pa-3" Variant="Variant.Filled"
+               Size="Size.Large" Color="Color.Primary" Style="bottom: 30px; right: 10px;"
+               onclick="@(() => NavigationManager.NavigateTo(Constants.Constant.NavRoutes.FishAssistant))"/>

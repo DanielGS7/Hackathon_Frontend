@@ -1,0 +1,18 @@
+@using FishTracker.Components.Constants
+
+<div onclick="@(() => NavigationManager.NavigateTo(string.Format(Constant.NavRoutes.FishDetail, Fish.Id)))" >
+    <MudCard Class="mx-1" Elevation="0">
+        <MudCardMedia Image="@Fish.ImgUrl" Height="100"/>
+        <MudCardContent Class="ma-1 pa-1">
+            <MudText Typo="Typo.body2"><b>@Fish.Name</b></MudText>
+            <div class="d-flex">
+                @if (Fish.ShowRecentIcon)
+                {
+                    <MudIcon Class="ma-0 pa-0" Icon="@Icons.Material.Outlined.Timer" Size="Size.Small" Style="color: #666666"/>
+                }
+                <MudText Typo="Typo.subtitle2" Style="color: #666666">@(Fish.TrackedTime)</MudText>
+            </div>
+        </MudCardContent>
+    </MudCard>
+</div>
+

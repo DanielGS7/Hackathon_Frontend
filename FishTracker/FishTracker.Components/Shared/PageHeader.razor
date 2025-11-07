@@ -1,0 +1,8 @@
+@using FishTracker.Components.Constants
+<MudPaper Class="d-flex align-center px-2 py-4" Elevation="0" Square="true">
+    <MudIconButton Icon="@Icons.Material.Filled.ArrowBack" OnClick="@(() => NavigationManager.NavigateTo(Constant.NavRoutes.Home))" />
+    <MudText Typo="Typo.h2" Align="Align.Center" Color="Color.Primary" Class="flex-grow-1">
+        @Title
+    </MudText>
+    <div style="width:40px;"></div>
+</MudPaper>

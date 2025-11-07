@@ -1,0 +1,17 @@
+<tr>
+    <td>
+        <div class="d-flex">
+            <MudIcon Class="pr-1" Icon="@Icon" Style="color: #666666"/>
+            <MudText Style="color: #666666">@PropertyName</MudText>
+        </div>
+    </td>
+    <td>
+        @PropertyValue
+    </td>
+</tr>
+
+@code {
+    [Parameter] public string PropertyName { get; set; }
+    [Parameter] public string PropertyValue { get; set; }
+    [Parameter] public string Icon { get; set; }
+}
