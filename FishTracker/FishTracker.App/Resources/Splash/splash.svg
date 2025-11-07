@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+    <title id="title">RMDY — Fish Tracker (Square Transparent)</title>
+    <desc id="desc">Transparent square SVG with centered text: RMDY on the first line and Fish Tracker below it.</desc>
+
+    <!-- Transparent background (no rect) -->
+
+    <!-- Centered text block -->
+    <text x="512" y="512"
+          text-anchor="middle"
+          dominant-baseline="middle"
+          font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif"
+          fill="#FFFFFF">
+        <tspan x="512" dy="0" font-size="160" font-weight="800">RMDY</tspan>
+        <tspan x="512" dy="90" font-size="80" font-weight="600">Fish Tracker</tspan>
+    </text>
+</svg>

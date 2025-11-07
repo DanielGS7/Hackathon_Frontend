@@ -1,0 +1,90 @@
+@page "/fish-detail/{Id}"
+@using FishTracker.Components.Pages.FishDetail.Parts
+
+<MudContainer>
+    <PageHeader title="Fish detail"/>
+    
+    @if (_loading)
+    {
+        <MudProgressLinear Indeterminate="true" Color="Color.Primary"/>
+    }
+    else
+    {
+        <MudPaper Class="px-9 pb-9 pt-2">
+            <div class="justify-center">
+                <MudStack AlignItems="AlignItems.Center">
+                    <MudImage Src="@($"https://wafishtrackerapi-dxekchh4dvdjg0g4.francecentral-01.azurewebsites.net/{_fishDetails.ImageUrl}")" Width="350"/>
+                    <MudText Typo="Typo.h3" Align="Align.Center">@_fishDetails.Name</MudText>
+                    <MudText Typo="Typo.body1" Align="Align.Center">@_fishDetails.Family</MudText>
+                </MudStack>
+            </div>
+            <div class="d-flex flex-row justify-space-around mt-3">
+                <MudStack AlignItems="AlignItems.Center">
+                    <MudIcon Icon="@Icons.Material.Filled.OpenInFull" Color="Color.Primary" Size="Size.Large"/>
+                    <MudText Typo="Typo.body1">@($"{_fishDetails.MinSize}-{_fishDetails.MaxSize} cm")</MudText>
+                </MudStack>
+                <MudStack AlignItems="AlignItems.Center">
+                    <MudIcon Icon="@Icons.Material.Filled.Water" Color="Color.Primary" Size="Size.Large"/>
+                    <MudText>@_fishDetails.WaterType</MudText>
+                </MudStack>
+                <MudStack AlignItems="AlignItems.Center">
+                    <MudIcon Icon="@Icons.Material.Filled.Diamond" Color="Color.Primary" Size="Size.Large"/>
+                    <MudText>Common</MudText>
+                </MudStack>
+            </div>
+        </MudPaper>
+
+        <MudPaper Class="my-6" Elevation="0">
+            <MudText Class="my-3"><b>More info</b></MudText>
+            <MudSimpleTable Elevation="0">
+                <tbody>
+                <FishInfoPropertyRow Icon="@Icons.Material.Outlined.Group" PropertyName="Family"
+                                     PropertyValue="@_fishDetails.Family"/>
+                <FishInfoPropertyRow Icon="@Icons.Material.Outlined.Grass" PropertyName="Environment"
+                                     PropertyValue="@_fishDetails.Environment"/>
+                <FishInfoPropertyRow Icon="@Icons.Material.Outlined.LocationOn" PropertyName="Region"
+                                     PropertyValue="@_fishDetails.Region"/>
+                <FishInfoPropertyRow Icon="@Icons.Material.Outlined.Shield" PropertyName="Conservation"
+                                     PropertyValue="@_fishDetails.ConsStatusDescription"/>
+                <FishInfoPropertyRow Icon="@Icons.Material.Outlined.ScubaDiving" PropertyName="Depth Range"
+                                     PropertyValue="@($"{_fishDetails.DepthRangeMin.ToString()} - {_fishDetails.DepthRangeMax.ToString()}")"/>
+                <FishInfoPropertyRow Icon="@Icons.Material.Outlined.SmartToy" PropertyName="AI Accuracy"
+                                     PropertyValue="@_fishDetails.AiAccuracy.ToString()"/>
+                </tbody>
+            </MudSimpleTable>
+        </MudPaper>
+
+        <MudPaper Class="my-6" Elevation="0">
+            <MudExpansionPanels MultiExpansion="true" Elevation="0" Outlined="true">
+                <MudExpansionPanel Expanded="true">
+                    <TitleContent>
+                        <MudText><b>Description</b></MudText>
+                    </TitleContent>
+                    <ChildContent>
+                        @_fishDetails.Description
+                    </ChildContent>
+                </MudExpansionPanel>
+                <MudExpansionPanel Expanded="true">
+                    <TitleContent>
+                        <MudText><b>Color Description</b></MudText>
+                    </TitleContent>
+                    <ChildContent>
+                        @_fishDetails.ColorDescription
+                    </ChildContent>
+                </MudExpansionPanel>
+                <MudExpansionPanel Expanded="false">
+                    <TitleContent>
+                        <MudText><b>Conservation Description</b></MudText>
+                    </TitleContent>
+                    <ChildContent>
+                        @_fishDetails.ConsStatusDescription
+                    </ChildContent>
+                </MudExpansionPanel>
+            </MudExpansionPanels>
+        </MudPaper>
+    }
+
+    <MudIconButton Icon="@Icons.Material.Filled.Chat" Class="fixed rounded-circle pa-3" Variant="Variant.Filled"
+                   Size="Size.Large" Color="Color.Primary" Style="bottom: 30px; right: 10px;"
+                   onclick="@(() => NavigationManager.NavigateTo(Constants.Constant.NavRoutes.FishAssistant))"/>
+</MudContainer>

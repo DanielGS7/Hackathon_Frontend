@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <RootNamespace>MudBlazorDebug</RootNamespace>
+    </PropertyGroup>
+
+
+    <ItemGroup>
+        <PackageReference Include="MudBlazor" Version="8.*"/>
+    </ItemGroup>
+
+
+    <ItemGroup>
+      <ProjectReference Include="..\FishTracker.Components\FishTracker.Components.csproj" />
+    </ItemGroup>
+
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="wwwroot\images\Fish.svg" />
+      <_ContentIncludedByDefault Remove="wwwroot\images\Nemo.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\images\pulse_button.lottie" />
+    </ItemGroup>
+</Project>

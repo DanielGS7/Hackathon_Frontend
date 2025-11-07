@@ -1,0 +1,28 @@
+<MudPaper Class="fixed pa-4" MaxHeight="400px" Width="90%" Style="bottom: 0;" Elevation="2">
+    <div class="d-flex py-2 z-90" style="background-color: white;">
+        <MudText Typo="Typo.h4">Recent catches</MudText>
+
+        <MudIconButton Icon="@Icons.Material.Filled.Refresh" Size="Size.Small" OnClick="@HandleRefresh"
+                       Color="Color.Primary"/>
+        <MudSpacer/>
+
+        <MudLink OnClick="@(() => NavigationManager.NavigateTo(Constants.Constant.NavRoutes.MyCatches))">View all</MudLink>
+    </div>
+    
+    @if (LoadingFishes)
+    {
+        <MudProgressLinear Color="Color.Primary" Indeterminate="true"/>
+    }
+    else
+    {
+        <MudGrid Class="overflow-scroll mt-1 mb-2" Spacing="0" Style="max-height: 300px">
+            @foreach (var fish in Fishes)
+            {
+                <MudItem xs="4">
+                    <BasicFishCard Fish="fish"/>
+                </MudItem>
+            }
+        </MudGrid>
+    }
+
+</MudPaper>

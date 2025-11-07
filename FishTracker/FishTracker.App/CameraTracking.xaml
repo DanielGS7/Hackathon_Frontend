@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="FishTracker.App.CameraTracking"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    Padding="0,0,0, 0"
+    BackgroundColor="Black">
+
+    <!-- Single-cell Grid. CameraView fills the screen, Stop button overlays at bottom center. -->
+    <Grid>
+        <toolkit:CameraView
+            x:Name="Camera"
+            VerticalOptions="FillAndExpand"
+            HorizontalOptions="FillAndExpand" />
+
+        <Button
+            HorizontalOptions="Center"
+            VerticalOptions="End"
+            Clicked="OnHomeClicked"
+            Text="Stop"
+            Margin="0,0,0,80" />
+    </Grid>
+</ContentPage>

@@ -1,0 +1,8 @@
+@page "/LiveTracking"
+@using FishTracker.Components.Constants
+
+<div class="d-flex justify-center" style="background-color: #0dcaf0; height: 100vh;">
+    <MudButton Class="fixed px-6 py-4 rounded-pill" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Stop" Color="Color.Primary" Style="bottom: 10vh;" OnClick="@StopTracking">
+        @Constant.Ui.StopTrackingButtonLabel
+    </MudButton>
+</div>

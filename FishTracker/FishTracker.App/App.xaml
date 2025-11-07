@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<Application xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FishTracker.App.App">
+    <Application.Resources>
+        <ResourceDictionary>
+
+            <!-- Match this hex to your Blazor “primary” button color -->
+            <Color x:Key="PrimaryColor">#FF6F3C</Color>
+            <Color x:Key="OnPrimaryColor">#FFFFFF</Color>
+            <Color x:Key="SurfaceColor">#000000</Color> <!-- good for camera bg -->
+
+            <!-- Make all MAUI Buttons look like your Blazor primary button -->
+            <Style TargetType="Button">
+                <Setter Property="BackgroundColor" Value="{StaticResource PrimaryColor}" />
+                <Setter Property="TextColor" Value="{StaticResource OnPrimaryColor}" />
+                <Setter Property="CornerRadius" Value="24" />
+                <Setter Property="Padding" Value="20,12" />
+                <Setter Property="FontAttributes" Value="Bold" />
+            </Style>
+
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

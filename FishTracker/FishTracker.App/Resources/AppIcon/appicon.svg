@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+    <title id="title">Fish Tracker — App Icon (Solid Tile)</title>
+    <desc id="desc">App icon with solid gradient rounded square tile, white fish symbol, and RMDY label.</desc>
+
+    <defs>
+        <!-- Smooth aqua gradient -->
+        <linearGradient id="tileGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#22D2F3"/>
+            <stop offset="60%" stop-color="#15B6E6"/>
+            <stop offset="100%" stop-color="#0587C6"/>
+        </linearGradient>
+
+        <!-- White stroke style -->
+        <style>
+            .mark { stroke:#FFFFFF; fill:none; stroke-linecap:round; stroke-linejoin:round; }
+        </style>
+    </defs>
+
+    <!-- Rounded square tile background -->
+    <rect x="64" y="64" width="896" height="896" rx="220" fill="url(#tileGrad)"/>
+
+    <!-- Fish symbol (centered) -->
+    <g transform="translate(512,500)">
+        <!-- Body -->
+        <ellipse class="mark" cx="0" cy="0" rx="220" ry="150" stroke-width="40"/>
+        <!-- Tail -->
+        <path class="mark" d="M-220,0 L-320,-90 L-320,90 Z" stroke-width="40"/>
+        <!-- Mouth -->
+        <path class="mark" d="M210,-40 Q235,0 210,40" stroke-width="40"/>
+        <!-- Eye -->
+        <circle cx="100" cy="-30" r="20" fill="#FFFFFF"/>
+    </g>
+
+    <!-- Decorative bubbles -->
+    <g fill="#FFFFFF" opacity="0.9">
+        <circle cx="760" cy="330" r="18"/>
+        <circle cx="800" cy="380" r="12" opacity="0.8"/>
+        <circle cx="740" cy="420" r="10" opacity="0.7"/>
+    </g>
+
+    <!-- Brand text -->
+    <text x="512" y="820" text-anchor="middle"
+          font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif"
+          font-size="120" font-weight="700" fill="#FFFFFF"
+          letter-spacing="4">RMDY</text>
+</svg>

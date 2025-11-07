@@ -1,0 +1,16 @@
+@page "/camera-tracking"
+@using Microsoft.AspNetCore.Components.Forms
+@using MudBlazor
+
+<h3>Camera Tracking</h3>
+
+<MudFileUpload T="IBrowserFile" Accept=".jpg" FilesChanged="@((file) => UploadFile(file))" MaximumFileCount="100">
+    <ActivatorContent>
+        <MudButton Variant="Variant.Filled"
+                   Color="Color.Primary"
+                   StartIcon="@Icons.Material.Filled.CloudUpload">
+            Only image files
+        </MudButton>
+    </ActivatorContent>
+</MudFileUpload>
+<MudText>@Response</MudText>

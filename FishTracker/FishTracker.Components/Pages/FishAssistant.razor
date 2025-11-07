@@ -1,0 +1,39 @@
+@page "/fish-assistant"
+@using FishTracker.Components.Constants
+
+<PageHeader Title="Fish Assistant"/>
+
+<MudContainer Style="display: flex; flex-direction: column; height: 90vh; max-height: 90vh">
+    <MudPaper Class="overflow-auto flex-grow-1" Elevation="0">
+        @foreach (var message in Messages.OrderBy(m => m.TimeStamp))
+        {
+            <MudChat ChatPosition="@(message.IsUser ? ChatBubblePosition.End : ChatBubblePosition.Start)">
+                <MudChatBubble Color="@(message.IsUser ? Color.Primary : Color.Default)">
+                    @message.Content
+                </MudChatBubble>
+            </MudChat>
+        }
+    </MudPaper>
+    <MudPaper Class="pa-3" Elevation="0" Width="100%">
+        <div class="input-wrapper" style="background-color: white">
+            <MudTextField T="string" @bind-Value="UserInput" Class="py-5" FullWidth="true" Style="background-color: white;" AutoGrow="true" Label="@Constant.Ui.FishAssistantUserInputLabel"
+                          Variant="Variant.Text" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Send"
+                          OnAdornmentClick="@SendChat" AdornmentColor="Color.Primary" Disabled="_chatLoading"/>
+        </div>
+    </MudPaper>
+
+    @* Dummy button to focus on after sending a message to trigger resize *@
+    <button @ref="_dummyBtn" style="position: absolute; opacity: 0; pointer-events: none;" tabindex="-1"></button>
+    
+</MudContainer>
+
+<style>
+    .input-wrapper {
+        transition: transform 0.3s ease;
+    }
+
+    .input-wrapper:focus-within {
+        transform: translateY(-32vh);
+    }
+</style>
+

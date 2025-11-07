@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Shell
+    x:Class="FishTracker.App.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:FishTracker.App"
+    xmlns:app="clr-namespace:FishTracker.App"
+    NavBarIsVisible="False"
+    TabBarIsVisible="False" >
+
+    <!-- Home hosts your Blazor page (MainPage has the BlazorWebView) -->
+    <ShellContent Route="Home" ContentTemplate="{DataTemplate app:MainPage}"  />
+
+
+</Shell>

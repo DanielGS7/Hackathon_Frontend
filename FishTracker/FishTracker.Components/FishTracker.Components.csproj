@@ -1,0 +1,41 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <RootNamespace>FishTracker.Components</RootNamespace>
+    </PropertyGroup>
+
+
+    <ItemGroup>
+        <SupportedPlatform Include="browser"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="9.0.6"/>
+        <PackageReference Include="MudBlazor" Version="8.12.0" />
+        <PackageReference Include="Refit" Version="8.0.0" />
+        <PackageReference Include="Refit.HttpClientFactory" Version="8.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <MauiAsset Include="..\FishTracker.App\obj\Debug\net9.0-android\compressed\publish\zuq9hzj3gx-hlv6wihy3d.br">
+        <Link>wwwroot\images\zuq9hzj3gx-hlv6wihy3d.br</Link>
+      </MauiAsset>
+      <MauiAsset Include="..\FishTracker.App\obj\Debug\net9.0-android\compressed\zuq9hzj3gx-hlv6wihy3d.gz">
+        <Link>wwwroot\images\zuq9hzj3gx-hlv6wihy3d.gz</Link>
+      </MauiAsset>
+    </ItemGroup>
+
+    <ItemGroup>
+      <AndroidAsset Include="wwwroot\images\Fish.svg" />
+      <AndroidAsset Include="wwwroot\images\Nemo.png" />
+      <AndroidAsset Include="wwwroot\images\pulse_button.lottie" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\FishTracker.Contracts\FishTracker.Contracts.csproj" />
+    </ItemGroup>
+
+</Project>

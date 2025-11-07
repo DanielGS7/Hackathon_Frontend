@@ -1,0 +1,12 @@
+@page "/my-catches"
+@using FishTracker.Components.Pages.TrackedFish.Parts
+
+<PageHeader Title="All catches"/>
+
+<MudContainer>
+    <div class="d-flex flex-column">
+        <CatchesPaper Title="Today" Fishes="_trackedToday" LoadingFishes="_loading"/>
+        <CatchesPaper Title="Yesterday" Fishes="_trackedYesterday" LoadingFishes="_loading"/>
+        <CatchesPaper Title="Older catches" Fishes="_trackedOlder" LoadingFishes="_loading"/>
+    </div>
+</MudContainer>
