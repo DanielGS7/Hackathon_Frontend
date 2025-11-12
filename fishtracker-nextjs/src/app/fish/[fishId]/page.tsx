@@ -6,6 +6,7 @@ import { fishTrackerApi } from '@/services/fishTrackerApi';
 import { inaturalistApi, INatPhoto } from '@/services/inaturalistApi';
 import { Fish } from '@/types/dto';
 import { LoadingSpinner, ErrorMessage, Badge, Button, Modal } from '@/components/ui';
+import { deviceIdService } from '@/services/deviceIdService';
 
 const FishDetailsPage: React.FC = () => {
   const router = useRouter();
@@ -27,20 +28,29 @@ const FishDetailsPage: React.FC = () => {
   const loadFishDetails = async () => {
     try {
       setLoading(true);
-      const fishData = await fishTrackerApi.getFishDetails(fishId);
+
+      // Get device ID - required to fetch tracked fish list
+      const deviceId = deviceIdService.getOrCreateDeviceId();
+
+      console.log('🔍 [FISH DETAILS] Loading fish:', fishId);
+      console.log('🔍 [FISH DETAILS] Device ID:', deviceId);
+
+      const fishData = await fishTrackerApi.getFishDetails(deviceId, fishId);
 
       if (!fishData) {
+        console.warn('⚠️ [FISH DETAILS] Fish not found in tracked fish list');
         setError('Fish not found');
         setLoading(false);
         return;
       }
 
+      console.log('✅ [FISH DETAILS] Fish loaded:', fishData.name);
       setFish(fishData);
       setLoading(false);
 
       loadINatPhotos(fishData.name);
     } catch (err) {
-      console.error('Error loading fish details:', err);
+      console.warn('⚠️ [FISH DETAILS] Failed to load fish details:', err);
       setError('Failed to load fish details');
       setLoading(false);
     }

@@ -171,21 +171,30 @@ export const fishTrackerApi = {
     return url;
   },
 
-  getFishDetails: async (fishId: string): Promise<Fish | null> => {
-    console.log('📤 [API] Getting fish details:', fishId);
-    console.log('📤 [API] GET', `${API_BASE_URL}/fish/details/${fishId}`);
+  getFishDetails: async (deviceId: string, fishId: string): Promise<Fish | null> => {
+    console.log('📤 [API] Getting fish details for fishId:', fishId);
+    console.log('📤 [API] Fetching from device fish list:', deviceId);
 
     try {
-      const response = await fetch(`${API_BASE_URL}/fish/details/${fishId}`);
+      // Backend doesn't have /fish/details/{fishId} endpoint
+      // We need to get all fish for the device and find the matching one
+      const response = await fetch(`${API_BASE_URL}/fish/${deviceId}`);
+      const data = await handleResponse<FishTrackerApiResponse<TrackedFishInfo[]>>(response);
 
-      if (response.status === 404) {
-        console.log('⚠️ [API] Fish not found');
+      console.log(`✅ [API] Retrieved ${data.data?.length || 0} tracked fish`);
+
+      // Find the fish with matching ID
+      const trackedFish = data.data?.find(
+        (tracked) => tracked.id === fishId || tracked.fishId === fishId || tracked.fish.id === fishId
+      );
+
+      if (!trackedFish) {
+        console.log('⚠️ [API] Fish not found in tracked fish list');
         return null;
       }
 
-      const data = await handleResponse<FishTrackerApiResponse<Fish>>(response);
-      console.log('✅ [API] Fish details retrieved:', data.data.name);
-      return data.data;
+      console.log('✅ [API] Fish details retrieved:', trackedFish.fish.name);
+      return trackedFish.fish;
     } catch (error) {
       if (error instanceof TypeError && error.message.includes('fetch')) {
         console.warn('⚠️ [API] Backend not available (fetch failed)');
