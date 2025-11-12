@@ -41,7 +41,7 @@ export interface FishInfoDevice {
 }
 
 export interface FishTrackerApiResponse<T> {
-  succes: boolean;
+  success: boolean;
   message: string;
   data: T;
 }
@@ -70,3 +70,28 @@ export interface FishBasic {
   trackedTime: string;
   showRecentIcon: boolean;
 }
+
+export interface ChatMessage {
+  id: string;
+  role: 'user' | 'assistant';
+  content: string;
+  timestamp: Date;
+}
+
+export interface UploadProgress {
+  loaded: number;
+  total: number;
+  percentage: number;
+}
+
+export type WaterType = 'Freshwater' | 'Saltwater' | 'Brackish';
+
+export type ConservationStatus =
+  | 'Least Concern'
+  | 'Near Threatened'
+  | 'Vulnerable'
+  | 'Endangered'
+  | 'Critically Endangered'
+  | 'Extinct in the Wild'
+  | 'Extinct'
+  | 'Data Deficient';

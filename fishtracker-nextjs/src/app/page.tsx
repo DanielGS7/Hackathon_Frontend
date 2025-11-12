@@ -56,14 +56,20 @@ const HomePage: React.FC = () => {
       const trackedFishInfos = response.data;
 
       const formattedFishes: FishBasic[] = trackedFishInfos
-        .sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime())
-        .map((trackedInfo: TrackedFishInfo) => ({
-          id: trackedInfo.fishId,
-          imgUrl: `https://example.com/images/${trackedInfo.imageUrl}`, // TODO: Replace with actual image base URL
-          name: trackedInfo.fish.name,
-          trackedTime: formatTrackedTime(new Date(trackedInfo.timestamp)),
-          showRecentIcon: true,
-        }));
+        .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
+        .map((trackedInfo: TrackedFishInfo) => {
+          const now = new Date();
+          const trackedDate = new Date(trackedInfo.timestamp);
+          const hoursDiff = (now.getTime() - trackedDate.getTime()) / (1000 * 60 * 60);
+
+          return {
+            id: trackedInfo.fishId,
+            imgUrl: fishTrackerApi.getFishImage(trackedInfo.imageUrl),
+            name: trackedInfo.fish.name,
+            trackedTime: formatTrackedTime(trackedDate),
+            showRecentIcon: hoursDiff < 24,
+          };
+        });
 
       setFishes(formattedFishes);
       setNoCatches(!formattedFishes.length);
