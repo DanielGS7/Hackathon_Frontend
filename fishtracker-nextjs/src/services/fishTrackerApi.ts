@@ -24,7 +24,7 @@ async function handleResponse<T>(response: Response): Promise<T> {
 
   if (!response.ok) {
     const errorData = await response.json().catch(() => ({ message: 'Unknown error' }));
-    console.error(`❌ [API] Error Response:`, errorData);
+    console.warn(`⚠️ [API] Error Response:`, errorData);
     throw new ApiError(response.status, errorData.message || `HTTP error! status: ${response.status}`);
   }
 
@@ -51,7 +51,12 @@ export const fishTrackerApi = {
       console.log('✅ [API] Device registered successfully');
       return result;
     } catch (error) {
-      console.error('❌ [API] Failed to register device:', error);
+      // Network failures are expected when backend is offline - log as warning
+      if (error instanceof TypeError && error.message.includes('fetch')) {
+        console.warn('⚠️ [API] Backend not available (fetch failed)');
+      } else {
+        console.warn('⚠️ [API] Failed to register device:', error);
+      }
       throw error;
     }
   },
@@ -66,7 +71,11 @@ export const fishTrackerApi = {
       console.log('✅ [API] Device data retrieved');
       return result;
     } catch (error) {
-      console.error('❌ [API] Failed to get device:', error);
+      if (error instanceof TypeError && error.message.includes('fetch')) {
+        console.warn('⚠️ [API] Backend not available (fetch failed)');
+      } else {
+        console.warn('⚠️ [API] Failed to get device:', error);
+      }
       throw error;
     }
   },
@@ -81,7 +90,11 @@ export const fishTrackerApi = {
       console.log(`✅ [API] Retrieved ${result.data?.length || 0} fish`);
       return result;
     } catch (error) {
-      console.error('❌ [API] Failed to get fish:', error);
+      if (error instanceof TypeError && error.message.includes('fetch')) {
+        console.warn('⚠️ [API] Backend not available (fetch failed)');
+      } else {
+        console.warn('⚠️ [API] Failed to get fish:', error);
+      }
       throw error;
     }
   },
@@ -132,17 +145,17 @@ export const fishTrackerApi = {
 
             resolve(data);
           } catch (error) {
-            console.error('❌ [API] Failed to parse upload response:', error);
+            console.warn('⚠️ [API] Failed to parse upload response:', error);
             reject(new Error('Failed to parse response'));
           }
         } else {
-          console.error(`❌ [API] Upload failed with status ${xhr.status}`);
+          console.warn(`⚠️ [API] Upload failed with status ${xhr.status}`);
           reject(new ApiError(xhr.status, `Upload failed: ${xhr.statusText}`));
         }
       });
 
       xhr.addEventListener('error', () => {
-        console.error('❌ [API] Network error during upload');
+        console.warn('⚠️ [API] Backend not available (network error during upload)');
         reject(new Error('Network error occurred'));
       });
 
@@ -174,7 +187,11 @@ export const fishTrackerApi = {
       console.log('✅ [API] Fish details retrieved:', data.data.name);
       return data.data;
     } catch (error) {
-      console.error('❌ [API] Failed to get fish details:', error);
+      if (error instanceof TypeError && error.message.includes('fetch')) {
+        console.warn('⚠️ [API] Backend not available (fetch failed)');
+      } else {
+        console.warn('⚠️ [API] Failed to get fish details:', error);
+      }
       throw error;
     }
   },
