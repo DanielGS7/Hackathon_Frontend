@@ -8,11 +8,5 @@ const nextConfig: NextConfig = {
   // Your existing Next.js config
 };
 
-const pwaConfig = withPWA({
-  dest: 'public',
-  register: true,
-  skipWaiting: true,
-  disable: process.env.NODE_ENV === 'development', // Disable PWA in development
-});
-
-export default pwaConfig(nextConfig);
+// PWA disabled for development - causing Turbopack conflicts
+export default nextConfig;

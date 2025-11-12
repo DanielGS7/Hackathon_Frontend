@@ -8,7 +8,7 @@ import {
 } from "../types/dto";
 
 const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5000";
+  process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5000/api";
 
 console.log("🔧 [API] FishTracker API initialized");
 console.log("🔧 [API] Base URL:", API_BASE_URL);
