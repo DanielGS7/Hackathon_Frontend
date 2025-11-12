@@ -206,10 +206,21 @@ const LiveTrackingPage: React.FC = () => {
         }
       }
     } catch (err) {
-      console.error(`❌ [TRACKING] Auto-capture #${currentCapture} failed:`, err);
-      addDebugLog('error', `Auto-capture #${currentCapture} failed`, err);
-      showToast(`Capture #${currentCapture} failed`, 'error', 2000);
-      setStatusMessage(`🔴 LIVE: Capture #${currentCapture} failed`);
+      // Network failures are expected when backend is offline - log as warning
+      const isNetworkError = err instanceof Error &&
+        (err.message.includes('Network error') || err.message.includes('fetch'));
+
+      if (isNetworkError) {
+        console.warn(`⚠️ [TRACKING] Auto-capture #${currentCapture} - Backend not available`);
+        addDebugLog('warning', `Auto-capture #${currentCapture} - Backend offline`, err);
+        showToast(`Capture #${currentCapture} - Backend offline`, 'warning', 2000);
+        setStatusMessage(`🔴 LIVE: Backend offline (capture #${currentCapture})`);
+      } else {
+        console.error(`❌ [TRACKING] Auto-capture #${currentCapture} failed:`, err);
+        addDebugLog('error', `Auto-capture #${currentCapture} failed`, err);
+        showToast(`Capture #${currentCapture} failed`, 'error', 2000);
+        setStatusMessage(`🔴 LIVE: Capture #${currentCapture} failed`);
+      }
     } finally {
       setIsProcessing(false);
     }
@@ -254,11 +265,11 @@ const LiveTrackingPage: React.FC = () => {
       });
 
       if (file.size > 5 * 1024 * 1024) {
-        console.error('❌ [TRACKING] File too large');
-        addDebugLog('error', 'File size exceeds 5MB limit', { size: file.size });
+        console.warn('⚠️ [TRACKING] File too large');
+        addDebugLog('warning', 'File size exceeds 5MB limit', { size: file.size });
         setError('Image size must be less than 5MB');
         setViewState('error');
-        showToast('Image too large - max 5MB', 'error');
+        showToast('Image too large - max 5MB', 'warning');
         return;
       }
 
@@ -329,12 +340,25 @@ const LiveTrackingPage: React.FC = () => {
         setStatusMessage('No fish detected');
       }
     } catch (err) {
-      console.error('❌ [TRACKING] Upload failed:', err);
-      addDebugLog('error', 'Image upload failed', err);
-      setError('Failed to upload image. Please try again.');
-      setViewState('error');
-      showToast('Upload failed - please try again', 'error');
-      setStatusMessage('Upload failed');
+      // Network failures are expected when backend is offline - log as warning
+      const isNetworkError = err instanceof Error &&
+        (err.message.includes('Network error') || err.message.includes('fetch'));
+
+      if (isNetworkError) {
+        console.warn('⚠️ [TRACKING] Upload failed - Backend not available');
+        addDebugLog('warning', 'Image upload failed - Backend offline', err);
+        setError('Backend server is not available. Please try again when connected.');
+        setViewState('error');
+        showToast('Backend offline - please try again later', 'warning');
+        setStatusMessage('Backend offline');
+      } else {
+        console.error('❌ [TRACKING] Upload failed:', err);
+        addDebugLog('error', 'Image upload failed', err);
+        setError('Failed to upload image. Please try again.');
+        setViewState('error');
+        showToast('Upload failed - please try again', 'error');
+        setStatusMessage('Upload failed');
+      }
     }
   };
 
