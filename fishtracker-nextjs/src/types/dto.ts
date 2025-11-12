@@ -70,3 +70,9 @@ export interface FishBasic {
   trackedTime: string;
   showRecentIcon: boolean;
 }
+
+export interface ChatMessage {
+  isUser: boolean;
+  content: string;
+  timeStamp: string;
+}

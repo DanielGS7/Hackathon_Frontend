@@ -1,5 +1,5 @@
 // fishtracker-nextjs/src/services/fishTrackerApi.ts
-import { RegisterDevice, FishTrackerApiResponse, TrackedFishInfo } from '../types/dto';
+import { RegisterDevice, FishTrackerApiResponse, TrackedFishInfo, ChatRequest, ChatResponse, Fish } from '../types/dto';
 
 const API_BASE_URL = 'http://localhost:5000'; // TODO: Confirm actual API base URL
 
@@ -20,6 +20,28 @@ export const fishTrackerApi = {
 
   getFish: async (deviceId: string): Promise<FishTrackerApiResponse<TrackedFishInfo[]>> => {
     const response = await fetch(`${API_BASE_URL}/fish/${deviceId}`);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return response.json();
+  },
+
+  getFishDetail: async (fishId: string): Promise<FishTrackerApiResponse<Fish>> => {
+    const response = await fetch(`${API_BASE_URL}/fish/detail/${fishId}`);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return response.json();
+  },
+
+  chat: async (deviceId: string, request: ChatRequest): Promise<FishTrackerApiResponse<ChatResponse>> => {
+    const response = await fetch(`${API_BASE_URL}/chat/${deviceId}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(request),
+    });
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
