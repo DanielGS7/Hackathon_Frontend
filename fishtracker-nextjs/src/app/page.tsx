@@ -30,14 +30,28 @@ const HomePage: React.FC = () => {
         addDebugLog('info', 'Fetching Lottie animation');
 
         const response = await fetch('/images/pulse_button.lottie');
+
+        if (!response.ok) {
+          console.log('ℹ️ [HOME] Lottie animation file not found, using fallback');
+          addDebugLog('info', 'Lottie animation not available, using CSS animation');
+          return;
+        }
+
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+          console.log('ℹ️ [HOME] Lottie file is not JSON format, using fallback');
+          addDebugLog('info', 'Lottie file format invalid, using CSS animation');
+          return;
+        }
+
         const data = await response.json();
         setAnimationData(data);
 
         console.log('✅ [HOME] Lottie animation loaded');
         addDebugLog('success', 'Lottie animation loaded successfully');
       } catch (error) {
-        console.error("❌ [HOME] Failed to fetch animation data:", error);
-        addDebugLog('error', 'Failed to load Lottie animation', error);
+        console.log('ℹ️ [HOME] Lottie animation unavailable, using CSS fallback');
+        addDebugLog('info', 'Using CSS animation fallback');
       }
     };
 
@@ -69,24 +83,32 @@ const HomePage: React.FC = () => {
         addDebugLog('info', 'Registering device with backend');
         setStatusMessage('Connecting to server...');
 
-        await fishTrackerApi.registerDevice({ id: currentDeviceId });
+        try {
+          await fishTrackerApi.registerDevice({ id: currentDeviceId });
 
-        console.log('✅ [HOME] Device registered successfully');
-        addDebugLog('success', 'Device registered with backend');
-        showToast('Connected to FishTracker server', 'success');
+          console.log('✅ [HOME] Device registered successfully');
+          addDebugLog('success', 'Device registered with backend');
+          showToast('Connected to FishTracker server', 'success');
 
-        // Fetch user's fish
-        setStatusMessage('Loading your catches...');
-        await fetchFishes(currentDeviceId);
+          // Fetch user's fish
+          setStatusMessage('Loading your catches...');
+          await fetchFishes(currentDeviceId);
 
-        console.log('✅ [HOME] Initialization complete');
-        addDebugLog('success', 'App initialization complete');
-        setStatusMessage('Ready!');
+          console.log('✅ [HOME] Initialization complete');
+          addDebugLog('success', 'App initialization complete');
+          setStatusMessage('Ready!');
+        } catch (backendError) {
+          // Backend not available - graceful degradation
+          console.log('⚠️ [HOME] Backend not available - running in offline mode');
+          addDebugLog('warning', 'Backend server not available - offline mode');
+          showToast('Running in offline mode - backend not available', 'warning', 4000);
+          setStatusMessage('Offline mode - Backend not connected');
+          setNoCatches(true);
+        }
       } catch (error) {
-        console.error("❌ [HOME] Failed to initialize data:", error);
-        addDebugLog('error', 'App initialization failed', error);
-        showToast('Failed to connect to server. Some features may not work.', 'error');
-        setStatusMessage('Error connecting to server');
+        console.log('⚠️ [HOME] Non-critical initialization issue');
+        addDebugLog('info', 'Initialization completed with warnings');
+        setStatusMessage('Ready (limited functionality)');
       } finally {
         setLoadingFishes(false);
       }
@@ -111,7 +133,7 @@ const HomePage: React.FC = () => {
         addDebugLog('info', 'No fish history found');
         setFishes([]);
         setNoCatches(true);
-        showToast('No catches yet. Start tracking fish!', 'info');
+        showToast('No catches yet. Start tracking fish!', 'info', 3000);
         return;
       }
 
@@ -143,13 +165,12 @@ const HomePage: React.FC = () => {
         recent: recentCount
       });
 
-      showToast(`Loaded ${formattedFishes.length} ${formattedFishes.length === 1 ? 'catch' : 'catches'}`, 'success');
+      showToast(`Loaded ${formattedFishes.length} ${formattedFishes.length === 1 ? 'catch' : 'catches'}`, 'success', 3000);
     } catch (error) {
-      console.error("❌ [HOME] Failed to fetch fishes:", error);
-      addDebugLog('error', 'Failed to fetch fish history', error);
+      console.log('⚠️ [HOME] Could not fetch fish history');
+      addDebugLog('warning', 'Fish history unavailable');
       setFishes([]);
       setNoCatches(true);
-      showToast('Failed to load your catches', 'error');
     }
   };
 
@@ -216,8 +237,10 @@ const HomePage: React.FC = () => {
               style={{ width: '350px', height: '350px' }}
             />
           ) : (
-            <div className="w-full h-full flex items-center justify-center">
-              <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-blue-600" />
+            <div className="w-full h-full flex items-center justify-center relative">
+              <div className="absolute inset-0 rounded-full border-4 border-blue-200 animate-ping opacity-20" />
+              <div className="absolute inset-0 rounded-full border-4 border-blue-300 animate-pulse" style={{ animationDelay: '0.3s' }} />
+              <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-400 to-blue-600 opacity-10 animate-pulse" />
             </div>
           )}
           <img src="/images/Fish.svg" alt="Fish" className="absolute w-15 h-15 group-hover:scale-110 transition-transform" />
